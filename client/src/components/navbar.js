@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Navbar() {
+function Navbar(props) {
+  let { loginSession } = props;
   let pages = [
     { link: '/', text: 'Home' },
     { link: '/todo', text: 'My TODO List' }
@@ -36,6 +37,29 @@ function Navbar() {
               </li>
             );
           })}
+        </ul>
+
+        <ul className='navbar-nav'>
+          { loginSession.isLoggedIn ? (
+            <li className='nav-item'>
+              <Link to='/logout' className='nav-link'>
+                Log Out
+              </Link>
+            </li>
+          ) : (
+            <React.Fragment>
+              <li className='nav-item'>
+                <Link to='/login' className='nav-link'>
+                  Log In
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link to='/register' className='nav-link'>
+                  Register
+                </Link>
+              </li>
+            </React.Fragment>
+          )}
         </ul>
       </div>
     </nav>

@@ -8,7 +8,7 @@ function Home() {
         <h1 className='display-3'>ReactTODO</h1>
         <p>Organize your tasks with ReactTODO!</p>
         <p>
-          <Link to='/login'>
+          <Link to='/register'>
             <button className='btn btn-primary'>Get Started</button>
           </Link>
         </p>
