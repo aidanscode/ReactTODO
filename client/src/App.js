@@ -9,7 +9,6 @@ import Register from './components/register';
 import Error404 from './components/error404';
 
 class App extends Component {
-
   constructor() {
     super();
     this.state = {
@@ -21,9 +20,10 @@ class App extends Component {
   }
 
   render() {
+    let { loginSession } = this.state;
     return (
       <Router>
-        <Navbar loginSession={this.state.loginSession} />
+        <Navbar isLoggedIn={loginSession.isLoggedIn} />
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path='/todo' component={Todo} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar(props) {
-  let { loginSession } = props;
+  let { isLoggedIn } = props;
   let pages = [
     { link: '/', text: 'Home' },
     { link: '/todo', text: 'My TODO List' }
@@ -40,7 +40,7 @@ function Navbar(props) {
         </ul>
 
         <ul className='navbar-nav'>
-          { loginSession.isLoggedIn ? (
+          {isLoggedIn ? (
             <li className='nav-item'>
               <Link to='/logout' className='nav-link'>
                 Log Out
