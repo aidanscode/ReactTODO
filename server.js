@@ -1,6 +1,12 @@
 const express = require('express');
+var bodyParser = require('body-parser');
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/todolist', {

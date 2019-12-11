@@ -7,6 +7,7 @@ import Todo from './components/todo';
 import Login from './components/login';
 import Register from './components/register';
 import Error404 from './components/error404';
+import Notifications from 'react-notify-toast';
 
 class App extends Component {
   constructor() {
@@ -22,16 +23,19 @@ class App extends Component {
   render() {
     let { loginSession } = this.state;
     return (
-      <Router>
-        <Navbar isLoggedIn={loginSession.isLoggedIn} />
-        <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/todo' component={Todo} />
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
-          <Route component={Error404} />
-        </Switch>
-      </Router>
+      <React.Fragment>
+        <Notifications />
+        <Router>
+          <Navbar isLoggedIn={loginSession.isLoggedIn} />
+          <Switch>
+            <Route path='/' exact component={Home} />
+            <Route path='/todo' component={Todo} />
+            <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
+            <Route component={Error404} />
+          </Switch>
+        </Router>
+      </React.Fragment>
     );
   }
 }
