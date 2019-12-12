@@ -20,6 +20,23 @@ class App extends Component {
     };
   }
 
+  handleLogIn = sessionKey => {
+    localStorage.setItem('session-key', sessionKey);
+
+    let loginSession = {
+      isLoggedIn: true,
+      session: sessionKey
+    };
+    this.setState({ loginSession });
+  };
+
+  handleLogOut() {
+    localStorage.remoteItem('session-key');
+
+    let loginSession = { isLoggedIn: false, session: null };
+    this.setState({ loginSession });
+  }
+
   render() {
     let { loginSession } = this.state;
     return (
@@ -31,7 +48,12 @@ class App extends Component {
             <Route path='/' exact component={Home} />
             <Route path='/todo' component={Todo} />
             <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
+            <Route
+              path='/register'
+              render={props => (
+                <Register {...props} onLogin={this.handleLogIn} />
+              )}
+            />
             <Route component={Error404} />
           </Switch>
         </Router>

@@ -1,5 +1,6 @@
 const User = require('../../../models/User');
 const UserSession = require('../../../models/UserSession');
+const { generateRandomSessionKey } = require('../../../utils');
 
 const handle = (req, res) => {
   let { email, password } = req.body;
@@ -8,7 +9,7 @@ const handle = (req, res) => {
     return res.json({ success: false, message: 'Missing input!' });
   }
 
-  User.findOne({ email: email }, (err, user) => {
+  User.findOne({ email: email }, async (err, user) => {
     if (err) {
       return res.json({ success: false, message: 'System error' });
     }
@@ -26,6 +27,7 @@ const handle = (req, res) => {
       });
     } else {
       let userSession = new UserSession({ userId: user._id });
+      userSession.sessionKey = await generateRandomSessionKey();
 
       userSession.save((err, doc) => {
         if (err) {
@@ -35,7 +37,7 @@ const handle = (req, res) => {
         return res.json({
           success: true,
           message: 'Successfully logged in!',
-          sessionId: doc._id
+          sessionKey: doc.sessionKey
         });
       });
     }

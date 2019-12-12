@@ -5,6 +5,10 @@ var UserSessionSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  sessionKey: {
+    type: String,
+    default: ''
+  },
   updatedAt: {
     type: Date,
     default: Date.now()

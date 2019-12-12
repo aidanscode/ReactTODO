@@ -1,5 +1,6 @@
 const User = require('../../../models/User');
-const { isValidEmail } = require('../../../utils');
+const UserSession = require('../../../models/UserSession');
+const { isValidEmail, generateRandomSessionKey } = require('../../../utils');
 
 const handle = (req, res) => {
   let { name, email, password, passwordConfirm } = req.body;
@@ -30,12 +31,26 @@ const handle = (req, res) => {
       email: email
     });
     user.password = user.generateHash(password);
-    user.save((err, doc) => {
+    user.save(async (err, doc) => {
       if (err) {
         return res.json({ success: false, message: 'System error' });
       }
 
-      return res.json({ success: true, message: 'Account registered!' });
+      let userSession = new UserSession({
+        userId: doc._id
+      });
+      userSession.sessionKey = await generateRandomSessionKey();
+      userSession.save((err, sessionDoc) => {
+        if (err) {
+          return res.json({ success: false, message: 'System error' });
+        }
+
+        return res.json({
+          success: true,
+          message: 'Account registered!',
+          sessionKey: sessionDoc.sessionKey
+        });
+      });
     });
   });
 };

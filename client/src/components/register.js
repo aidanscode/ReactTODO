@@ -49,6 +49,8 @@ class Register extends Component {
       .then(response => {
         if (response.success) {
           this.sendNotification('success', response.message);
+
+          this.props.onLogin(response.sessionKey);
           this.setState({ didRegister: true });
         } else {
           this.sendNotification('error', response.message);
@@ -58,7 +60,7 @@ class Register extends Component {
 
   render() {
     if (this.state.didRegister) {
-      return <Redirect to='/login' />;
+      return <Redirect to='/' />;
     }
     return (
       <div className='text-center'>
