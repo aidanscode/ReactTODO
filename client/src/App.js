@@ -6,18 +6,27 @@ import Home from './components/home';
 import Todo from './components/todo';
 import Login from './components/login';
 import Register from './components/register';
+import Logout from './components/logout';
 import Error404 from './components/error404';
 import Notifications from 'react-notify-toast';
+import { initializeLoginSession, endSession } from './util';
 
 class App extends Component {
   constructor() {
     super();
+
     this.state = {
       loginSession: {
         isLoggedIn: false,
         session: null
       }
     };
+  }
+
+  componentDidMount() {
+    initializeLoginSession(loginSession => {
+      this.setState({ loginSession: loginSession });
+    });
   }
 
   handleLogIn = sessionKey => {
@@ -30,12 +39,18 @@ class App extends Component {
     this.setState({ loginSession });
   };
 
-  handleLogOut() {
-    localStorage.remoteItem('session-key');
+  handleLogOut = callback => {
+    endSession(success => {
+      if (success) {
+        localStorage.removeItem('session-key');
 
-    let loginSession = { isLoggedIn: false, session: null };
-    this.setState({ loginSession });
-  }
+        let loginSession = { isLoggedIn: false, session: null };
+        this.setState({ loginSession }, () => {
+          callback(success);
+        });
+      }
+    });
+  };
 
   render() {
     let { loginSession } = this.state;
@@ -47,11 +62,20 @@ class App extends Component {
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/todo' component={Todo} />
-            <Route path='/login' component={Login} />
+            <Route
+              path='/login'
+              render={props => <Login {...props} onLogin={this.handleLogIn} />}
+            />
             <Route
               path='/register'
               render={props => (
                 <Register {...props} onLogin={this.handleLogIn} />
+              )}
+            />
+            <Route
+              path='/logout'
+              render={props => (
+                <Logout {...props} handleLogout={this.handleLogOut} />
               )}
             />
             <Route component={Error404} />

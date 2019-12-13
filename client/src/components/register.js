@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Copyright from './copyright';
-import { notify } from 'react-notify-toast';
+import { sendNotification } from '../util';
 
 class Register extends Component {
   constructor() {
@@ -22,19 +22,6 @@ class Register extends Component {
     });
   };
 
-  sendNotification = (type, message) => {
-    switch (type) {
-      case 'success':
-        notify.show(message, 'success', 3000);
-        break;
-      case 'error':
-        notify.show(message, 'error', 3000);
-        break;
-      default:
-        break;
-    }
-  };
-
   handleSubmit = event => {
     event.preventDefault();
 
@@ -48,12 +35,12 @@ class Register extends Component {
       .then(result => result.json())
       .then(response => {
         if (response.success) {
-          this.sendNotification('success', response.message);
+          sendNotification('success', response.message);
 
           this.props.onLogin(response.sessionKey);
           this.setState({ didRegister: true });
         } else {
-          this.sendNotification('error', response.message);
+          sendNotification('error', response.message);
         }
       });
   };
