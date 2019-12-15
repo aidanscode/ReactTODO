@@ -7,6 +7,7 @@ app.use(
     extended: true
   })
 );
+app.set('trust proxy', true);
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/todolist', {

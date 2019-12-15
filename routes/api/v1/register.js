@@ -37,7 +37,8 @@ const handle = (req, res) => {
       }
 
       let userSession = new UserSession({
-        userId: doc._id
+        userId: doc._id,
+        ipAddress: req.ip
       });
       userSession.sessionKey = await generateRandomSessionKey();
       userSession.save((err, sessionDoc) => {

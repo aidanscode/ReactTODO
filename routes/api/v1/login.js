@@ -26,7 +26,10 @@ const handle = (req, res) => {
         message: 'Invalid email/password combination!'
       });
     } else {
-      let userSession = new UserSession({ userId: user._id });
+      let userSession = new UserSession({
+        userId: user._id,
+        ipAddress: req.ip
+      });
       userSession.sessionKey = await generateRandomSessionKey();
 
       userSession.save((err, doc) => {

@@ -1,19 +1,19 @@
 var mongoose = require('mongoose');
 
-var UserSessionSchema = new mongoose.Schema({
+var TaskSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
   userId: {
     type: String,
     default: ''
   },
-  sessionKey: {
-    type: String,
-    default: ''
-  },
-  ipAddress: {
-    type: String,
-    default: ''
-  },
-  updatedAt: {
+  createdAt: {
     type: Date,
     default: Date.now()
   },
@@ -23,4 +23,4 @@ var UserSessionSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('UserSession', UserSessionSchema);
+module.exports = mongoose.model('Task', TaskSchema);
