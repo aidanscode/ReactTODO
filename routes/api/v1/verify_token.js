@@ -7,7 +7,7 @@ const handle = (req, res) => {
     return res.json({ isValid: false, message: 'Missing input!' });
   }
 
-  let userSession = getUserSession(sessionKey, req.ip, userSession => {
+  getUserSession(sessionKey, req.ip, userSession => {
     return res.json(userSession);
   });
 };
