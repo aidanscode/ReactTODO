@@ -6,5 +6,6 @@ TasksRouter.use(function(req, res, next) {
 });
 
 TasksRouter.route('/list').get(require('./list'));
+TasksRouter.route('/create').post(require('./create'));
 
 module.exports = TasksRouter;

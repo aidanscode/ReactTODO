@@ -19,11 +19,14 @@ const handle = (req, res) => {
       }
 
       tasks = tasks.map(t => {
-        return {
+        let newTask = {
+          _id: t._id,
           title: t.title,
           description: t.description,
           createdAt: t.createdAt.toLocaleString()
         };
+
+        return newTask;
       });
 
       return res.json({ success: true, message: 'Success', data: tasks });

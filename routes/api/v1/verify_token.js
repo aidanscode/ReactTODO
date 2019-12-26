@@ -1,4 +1,4 @@
-const { getUserSession } = require('../../../utils');
+const { validateUserSession } = require('../../../utils');
 
 const handle = (req, res) => {
   let { sessionKey } = req.body;
@@ -7,7 +7,7 @@ const handle = (req, res) => {
     return res.json({ isValid: false, message: 'Missing input!' });
   }
 
-  getUserSession(sessionKey, req.ip, userSession => {
+  validateUserSession(sessionKey, req.ip, userSession => {
     return res.json(userSession);
   });
 };

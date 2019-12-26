@@ -24,7 +24,7 @@ const functions = {
     return key;
   },
 
-  async getUserSession(sessionKey, ipAddress, callback) {
+  async validateUserSession(sessionKey, ipAddress, callback) {
     let userSession = await UserSession.findOne({
       sessionKey: sessionKey,
       ipAddress: ipAddress,
@@ -63,6 +63,49 @@ const functions = {
         }
 
         callback({ isValid: true, message: 'Session is valid' });
+        return;
+      });
+    }
+  },
+
+  async getUserSession(sessionKey, callback) {
+    let userSession = await UserSession.findOne({
+      sessionKey: sessionKey,
+      isDeleted: false
+    }).exec();
+
+    if (userSession === null) {
+      callback(null);
+      return;
+    }
+
+    //Session exists and is not deleted, check if has expired
+    let lastUpdatedAt = userSession.updatedAt;
+    let now = new Date();
+    lastUpdatedAt.setDate(lastUpdatedAt.getDate() + 7); //Add one week to date
+
+    if (now > lastUpdatedAt) {
+      //Over 1 week since last updated
+      userSession.isDeleted = true;
+      userSession.save((err, doc) => {
+        if (err) {
+          callback(null);
+          return;
+        }
+
+        callback(null);
+        return;
+      });
+    } else {
+      //Key has not yet expired, update updatedAt and return valid
+      userSession.updatedAt = Date.now();
+      userSession.save((err, doc) => {
+        if (err) {
+          callback(null);
+          return;
+        }
+
+        callback(doc);
         return;
       });
     }
