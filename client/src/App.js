@@ -61,7 +61,12 @@ class App extends Component {
           <Navbar isLoggedIn={loginSession.isLoggedIn} />
           <Switch>
             <Route path='/' exact component={Home} />
-            <Route path='/todo' component={Todo} />
+            <Route
+              path='/todo'
+              render={props => (
+                <Todo {...props} sessionKey={loginSession.session} />
+              )}
+            />
             <Route
               path='/login'
               render={props => <Login {...props} onLogin={this.handleLogIn} />}
